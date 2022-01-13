@@ -8,6 +8,7 @@ from utils.args import get_args
 import pickle
 import os
 
+
 def main():
     # capture the config path from the run arguments
     # then process the json configuration file
@@ -21,15 +22,26 @@ def main():
     # create the experiments dirs
     create_dirs([config.callbacks.tensorboard_log_dir, config.callbacks.checkpoint_dir])
 
-    print('Create the data generator.' )
+    print("Create the data generator.")
     data_loader = HmmMelodyDataLoader(config)
-    print('Create the model.')
-    model = HmmMelodyModel(data_loader,config)
+    print("Create the model.")
+    model = HmmMelodyModel(data_loader, config)
     model.train()
-    #model.print_params()
+    # model.print_params()
     model.calculate_fwd_bckwd_probs()
-    #model.print_PAs()
-    evaluator = SimpleHmmEvaluator(model,[[3,8,1,6,0,5,10],[4,1,3,3,2,1,5],[-1,-1,-1,-1,-1,-1,-1],[-1,-1,3,5,-1,11,-1],[0,0,0,0,4,4,5],[2,3,-1,-1,-1,2,9]],config)
+    # model.print_PAs()
+    evaluator = SimpleHmmEvaluator(
+        model,
+        [
+            [3, 8, 1, 6, 0, 5, 10],
+            [4, 1, 3, 3, 2, 1, 5],
+            [-1, -1, -1, -1, -1, -1, -1],
+            [-1, -1, 3, 5, -1, 11, -1],
+            [0, 0, 0, 0, 4, 4, 5],
+            [2, 3, -1, -1, -1, 2, 9],
+        ],
+        config,
+    )
     evaluator.factorial_sample(0)
     evaluator.factorial_sample(1)
     evaluator.factorial_sample(2)
@@ -38,12 +50,24 @@ def main():
     les = data_loader.get_label_encoders()
     for le in les:
         print(le.classes_)
-    output = ReadableOutput(evaluator,data_loader)
+    output = ReadableOutput(evaluator, data_loader)
 
-    pickle.dump( model, open( os.path.abspath(r"evaluation/final_models/hmm_transp_melody_model.p"), "wb" ) )
-    pickle.dump( data_loader, open( os.path.abspath(r"evaluation/final_data_loaders/hmm_tranp_melody_data_loader.p"), "wb" ) )
+    pickle.dump(
+        model,
+        open(
+            os.path.abspath(r"evaluation/final_models/hmm_transp_melody_model.p"), "wb"
+        ),
+    )
+    pickle.dump(
+        data_loader,
+        open(
+            os.path.abspath(
+                r"evaluation/final_data_loaders/hmm_tranp_melody_data_loader.p"
+            ),
+            "wb",
+        ),
+    )
 
 
-
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

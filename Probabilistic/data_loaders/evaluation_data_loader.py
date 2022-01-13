@@ -2,11 +2,26 @@ from base.base_data_loader import BaseDataLoader
 import os
 import pickle
 
+
 class HmmMelodyDataLoader(BaseDataLoader):
     def __init__(self, config):
         super(HmmMelodyDataLoader, self).__init__(config)
-        self.obs_seq = pickle.load(open(os.path.abspath(r"C:\Users\User\Documents\Project\Models/Probabilistic/data_loaders/stored_data/aug_obs_seq.p"),"rb"))
-        self.state_seq = pickle.load(open(os.path.abspath(r"C:\Users\User\Documents\Project\Models/Probabilistic/data_loaders/stored_data/aug_state_seq.p"),"rb"))
+        self.obs_seq = pickle.load(
+            open(
+                os.path.abspath(
+                    r"C:\Users\User\Documents\Project\Models/Probabilistic/data_loaders/stored_data/aug_obs_seq.p"
+                ),
+                "rb",
+            )
+        )
+        self.state_seq = pickle.load(
+            open(
+                os.path.abspath(
+                    r"C:\Users\User\Documents\Project\Models/Probabilistic/data_loaders/stored_data/aug_state_seq.p"
+                ),
+                "rb",
+            )
+        )
         self.test_set_size = config.data.test_set_size
         self.train_test_split()
         self.calculate_state_spaces()
@@ -16,13 +31,13 @@ class HmmMelodyDataLoader(BaseDataLoader):
         self.obs_train_seq = []
         self.obs_test_seq = []
         for seq in self.obs_seq:
-            self.obs_train_seq.append(seq[0:-self.test_set_size])
-            self.obs_test_seq.append(seq[-self.test_set_size:])
+            self.obs_train_seq.append(seq[0 : -self.test_set_size])
+            self.obs_test_seq.append(seq[-self.test_set_size :])
         self.state_train_seq = []
         self.state_test_seq = []
         for seq in self.state_seq:
-            self.state_train_seq.append(seq[0:-self.test_set_size])
-            self.state_test_seq.append(seq[-self.test_set_size:])
+            self.state_train_seq.append(seq[0 : -self.test_set_size])
+            self.state_test_seq.append(seq[-self.test_set_size :])
 
     def calculate_state_spaces(self):
         self.state_spaces = []

@@ -9,6 +9,7 @@ import pickle
 import os
 import numpy as np
 
+
 def main():
     # capture the config path from the run arguments
     # then process the json configuration file
@@ -22,27 +23,61 @@ def main():
     # create the experiments dirs
     create_dirs([config.callbacks.tensorboard_log_dir, config.callbacks.checkpoint_dir])
 
-    print('Create the data generator.' )
+    print("Create the data generator.")
     data_loader = HmmMelodyDataLoader(config)
-    print('Create the model.')
-    model = HmmMelodyModel(data_loader,config)
+    print("Create the model.")
+    model = HmmMelodyModel(data_loader, config)
     model.train()
-    pickle.dump( model, open( os.path.abspath(r"evaluation/final_models/hmm_melody_training_set_model.p"), "wb" ) )
-    pickle.dump( data_loader, open( os.path.abspath(r"evaluation/final_data_loaders/hmm_melody_training_set_data_loader.p"), "wb" ) )
-    #model = pickle.load(open(os.path.abspath(r"C:\Users\User\Documents\Project\Models/Probabilistic/evaluation/final_models/hmm_melody_training_set_model.p"),"rb"))
-    #data_loader = pickle.load(open(os.path.abspath(r"C:\Users\User\Documents\Project\Models/Probabilistic/evaluation/final_data_loaders/hmm_melody_training_set_data_loader.p"),"rb"))
+    pickle.dump(
+        model,
+        open(
+            os.path.abspath(r"evaluation/final_models/hmm_melody_training_set_model.p"),
+            "wb",
+        ),
+    )
+    pickle.dump(
+        data_loader,
+        open(
+            os.path.abspath(
+                r"evaluation/final_data_loaders/hmm_melody_training_set_data_loader.p"
+            ),
+            "wb",
+        ),
+    )
+    # model = pickle.load(open(os.path.abspath(r"C:\Users\User\Documents\Project\Models/Probabilistic/evaluation/final_models/hmm_melody_training_set_model.p"),"rb"))
+    # data_loader = pickle.load(open(os.path.abspath(r"C:\Users\User\Documents\Project\Models/Probabilistic/evaluation/final_data_loaders/hmm_melody_training_set_data_loader.p"),"rb"))
     obs_test = data_loader.get_obs_test_seq()
     state_seq_test = data_loader.get_state_test_seq()
     count = 0
     total = 0
-    for obs_list,test_data in zip(list(zip(obs_test[0],obs_test[1],obs_test[2],obs_test[3],obs_test[4],obs_test[5])),list(zip(state_seq_test[0],state_seq_test[1],state_seq_test[2],state_seq_test[3],state_seq_test[4]))):
-        evaluator = SimpleHmmEvaluator(model,obs_list,config)
+    for obs_list, test_data in zip(
+        list(
+            zip(
+                obs_test[0],
+                obs_test[1],
+                obs_test[2],
+                obs_test[3],
+                obs_test[4],
+                obs_test[5],
+            )
+        ),
+        list(
+            zip(
+                state_seq_test[0],
+                state_seq_test[1],
+                state_seq_test[2],
+                state_seq_test[3],
+                state_seq_test[4],
+            )
+        ),
+    ):
+        evaluator = SimpleHmmEvaluator(model, obs_list, config)
         paths = evaluator.get_paths()
-        for prediction,label in zip(paths,test_data):
-            count += (np.sum(prediction==label))
+        for prediction, label in zip(paths, test_data):
+            count += np.sum(prediction == label)
             total += len(prediction)
-    print("accuracy = {}".format(str(count/total)))
-    '''
+    print("accuracy = {}".format(str(count / total)))
+    """
     #model.print_params()
     model.calculate_fwd_bckwd_probs()
     #model.print_PAs()
@@ -50,8 +85,8 @@ def main():
     evaluator.factorial_sample(0)
     output = ReadableOutput(evaluator,data_loader)
 
-'''
+"""
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

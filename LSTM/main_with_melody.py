@@ -10,6 +10,7 @@ from output_interpreter.readable_output import ReadableOutput
 from output_interpreter.music_xml_writer import MusicXmlWriter
 from output_interpreter.writable_output import WritableOutput
 
+
 def main():
     # capture the config path from the run arguments
     # then process the json configuration file
@@ -23,34 +24,41 @@ def main():
     # create the experiments dirs
     create_dirs([config.callbacks.tensorboard_log_dir, config.callbacks.checkpoint_dir])
 
-    print('Create the data generator.')
+    print("Create the data generator.")
     data_loader = LSTMMelodyDataLoader(config)
-    print('Create the model.')
+    print("Create the model.")
     model = SimpleLSTMModel(config)
 
-    print('Create the trainer')
+    print("Create the trainer")
     trainer = SimpleLSTMModelTrainer(model.model, data_loader.get_train_data(), config)
 
-    print('Start training the model.')
+    print("Start training the model.")
     trainer.train()
 
-    print('Evaluating on test set')
-    evaluator = SimpleLSTMEvaluator(model.model,data_loader.get_test_data())
-    print("test set loss and accuaracy: {} {}".format(evaluator.loss,evaluator.acc))
+    print("Evaluating on test set")
+    evaluator = SimpleLSTMEvaluator(model.model, data_loader.get_test_data())
+    print("test set loss and accuaracy: {} {}".format(evaluator.loss, evaluator.acc))
 
-    activations = get_activations(model.model, 0,data_loader.get_test_data()[0][[0],:,:])
+    activations = get_activations(
+        model.model, 0, data_loader.get_test_data()[0][[0], :, :]
+    )
 
-    print('Convert output to readable list')
-    readable_output = ReadableOutput(evaluator.sample_result,data_loader.get_test_data()[0],config.evaluator.test_sample_no)
+    print("Convert output to readable list")
+    readable_output = ReadableOutput(
+        evaluator.sample_result,
+        data_loader.get_test_data()[0],
+        config.evaluator.test_sample_no,
+    )
 
-    music_xml_writer = MusicXmlWriter(readable_output.voicings,readable_output.labels)
+    music_xml_writer = MusicXmlWriter(readable_output.voicings, readable_output.labels)
     output_score_filename = "output_scores/" + config.exp.name + "_output_score.xml"
     music_xml_writer.write(output_score_filename)
 
-    writable_output = WritableOutput(config,trainer,evaluator)
+    writable_output = WritableOutput(config, trainer, evaluator)
     writable_output.write("model_selection.csv")
 
     trainer.model.save("evaluation/final_models/melody_model.h5")
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()

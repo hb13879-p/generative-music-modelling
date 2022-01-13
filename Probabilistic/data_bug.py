@@ -6,17 +6,18 @@ from utils.dirs import create_dirs
 from utils.args import get_args
 import csv
 
+
 def main():
 
     try:
-          args = get_args()
-          config = process_config(args.config)
+        args = get_args()
+        config = process_config(args.config)
     except:
-          print("missing or invalid arguments")
-          exit(0)
+        print("missing or invalid arguments")
+        exit(0)
     data_loader = HmmMelodyDataLoader(config)
-    labels = pickle.load( open(r"data_bug/labels.p", "rb" ))
-    voicings = pickle.load(open(r"data_bug/voicings.p", "rb" ))
+    labels = pickle.load(open(r"data_bug/labels.p", "rb"))
+    voicings = pickle.load(open(r"data_bug/voicings.p", "rb"))
     print("labels0")
     print(labels[0][0])
     print(labels[1][0])
@@ -44,5 +45,6 @@ def main():
     print(voicings[3][408815])
     print(voicings[4][408815])
 
-if __name__ == '__main__':
+
+if __name__ == "__main__":
     main()

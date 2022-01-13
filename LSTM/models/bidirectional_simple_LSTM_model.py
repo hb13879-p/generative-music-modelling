@@ -10,12 +10,20 @@ class SimpleLSTMModel(BaseModel):
 
     def build_model(self):
         self.model = Sequential()
-        self.model.add(Bidirectional(LSTM(self.config.model.hidden_units,return_sequences=True),input_shape=(self.config.data.seq_length,self.config.data.no_input_features)))
-        self.model.add(Dense(self.config.data.no_output_units,activation='sigmoid'))
+        self.model.add(
+            Bidirectional(
+                LSTM(self.config.model.hidden_units, return_sequences=True),
+                input_shape=(
+                    self.config.data.seq_length,
+                    self.config.data.no_input_features,
+                ),
+            )
+        )
+        self.model.add(Dense(self.config.data.no_output_units, activation="sigmoid"))
 
         self.model.compile(
-            loss='binary_crossentropy',
+            loss="binary_crossentropy",
             optimizer=self.config.model.optimizer,
-            metrics=['acc'],
+            metrics=["acc"],
         )
         print(self.model.summary())

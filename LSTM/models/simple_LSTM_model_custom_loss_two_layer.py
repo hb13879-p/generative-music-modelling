@@ -5,6 +5,7 @@ from keras import losses
 from utils.losses import musical_closeness_loss3
 from utils.metrics import chord_accuracy
 
+
 class SimpleLSTMModel(BaseModel):
     def __init__(self, config):
         super(SimpleLSTMModel, self).__init__(config)
@@ -12,12 +13,21 @@ class SimpleLSTMModel(BaseModel):
 
     def build_model(self):
         self.model = Sequential()
-        self.model.add(LSTM(self.config.model.hidden_units,input_shape=(self.config.data.seq_length,self.config.data.no_input_features),return_sequences=True))
-        self.model.add(LSTM(self.config.model.hidden_units,return_sequences=True))
-        self.model.add(Dense(self.config.data.no_output_units,activation='sigmoid'))
+        self.model.add(
+            LSTM(
+                self.config.model.hidden_units,
+                input_shape=(
+                    self.config.data.seq_length,
+                    self.config.data.no_input_features,
+                ),
+                return_sequences=True,
+            )
+        )
+        self.model.add(LSTM(self.config.model.hidden_units, return_sequences=True))
+        self.model.add(Dense(self.config.data.no_output_units, activation="sigmoid"))
 
         self.model.compile(
             loss=musical_closeness_loss3,
             optimizer=self.config.model.optimizer,
-            metrics=['acc',chord_accuracy],
+            metrics=["acc", chord_accuracy],
         )
