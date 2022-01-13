@@ -1,0 +1,26 @@
+{
+  "exp": {
+    "name": "hmm_with_melody"
+  },
+  "data": {
+    "seq_length": 8,
+    "n_obs_seq" : 6,
+    "n_samples" : 100
+  },
+  "model": {
+  },
+  "trainer":{
+    "num_epochs": 10,
+    "batch_size": 32,
+    "validation_split":0.1,
+    "verbose_training": true
+  },
+  "callbacks":{
+    "checkpoint_monitor": "val_loss",
+    "checkpoint_mode": "min",
+    "checkpoint_save_best_only": true,
+   "checkpoint_save_weights_only": true,
+    "checkpoint_verbose": true,
+    "tensorboard_write_graph": true
+  }
+}

@@ -1,0 +1,35 @@
+{
+  "exp": {
+    "name": "LSTM_one_layer_aug_bi"
+  },
+  "data": {
+    "seq_length": 8,
+    "no_input_features": 32,
+    "no_output_units": 29,
+    "dataset_X_filename":"C:/Users/User/Documents/Project/Dataset/Augmented_outputs/X_aug_cons_transposed_with_melody_8_32_100.p",
+    "dataset_Y_filename":"C:/Users/User/Documents/Project/Dataset/Augmented_outputs/Y_aug_cons_transposed_with_melody_8_32_100.p"
+
+  },
+  "model": {
+    "learning_rate": 0.001,
+    "optimizer": "adam",
+    "hidden_units": 128
+  },
+  "trainer":{
+    "num_epochs": 2,
+    "batch_size": 128,
+    "validation_split":0.05,
+    "verbose_training": true
+  },
+  "evaluator":{
+    "test_sample_no":20
+  },
+  "callbacks":{
+    "checkpoint_monitor": "val_loss",
+    "checkpoint_mode": "min",
+    "checkpoint_save_best_only": true,
+   "checkpoint_save_weights_only": true,
+    "checkpoint_verbose": true,
+    "tensorboard_write_graph": true
+  }
+}

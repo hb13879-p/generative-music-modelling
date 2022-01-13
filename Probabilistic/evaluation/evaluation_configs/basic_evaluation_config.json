@@ -1,0 +1,21 @@
+{
+  "exp": {
+    "name": "fly_me_to_the_moon"
+  },
+  "musical_data": {
+    "PPQ": 960,
+    "min_res": 4,
+    "low": 51,
+    "high": 79,
+    "chord_rhythm": [16,32,48,64,80,96,112,128]
+  },
+  "model_data": {
+    "seq_length":8,
+    "inc_melody":true,
+    "output_score_filename":"output_scores/survey/melody_come_fly.xml",
+    "model_filename":"final_models/hmm_melody_model.p",
+    "data_loader_filename":"final_data_loaders/hmm_melody_data_loader.p",
+    "test_filename":"come_fly"
+  }
+
+}

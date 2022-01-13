@@ -1,0 +1,32 @@
+{
+  "exp": {
+    "name": "bidirectional_simple_LSTM"
+  },
+  "data": {
+    "seq_length": 8,
+    "no_input_features": 20,
+    "no_output_units": 29
+  },
+  "model": {
+    "learning_rate": 0.001,
+    "optimizer": "adam",
+    "hidden_units": 128
+  },
+  "trainer":{
+    "num_epochs": 100,
+    "batch_size": 32,
+    "validation_split":0.1,
+    "verbose_training": true
+  },
+  "evaluator":{
+    "test_sample_no":20
+  },
+  "callbacks":{
+    "checkpoint_monitor": "val_loss",
+    "checkpoint_mode": "min",
+    "checkpoint_save_best_only": true,
+   "checkpoint_save_weights_only": true,
+    "checkpoint_verbose": true,
+    "tensorboard_write_graph": true
+  }
+}
